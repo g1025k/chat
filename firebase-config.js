@@ -1,4 +1,4 @@
-// 以下の値をFirebaseプロジェクトの設定に置き換えてください
+// 以下の値をFirebaseコンソールから取得して書き換えてください
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -8,5 +8,4 @@ const firebaseConfig = {
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
-
 firebase.initializeApp(firebaseConfig);
