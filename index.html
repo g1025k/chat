@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>メディアチャット</title>
+  <title>チャット</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-database-compat.js"></script>
@@ -59,6 +59,9 @@
       background-color: #0066cc;
       color: white;
     }
+    button:disabled {
+      background-color: #666;
+    }
     img, video {
       max-width: 100%;
       border-radius: 4px;
@@ -67,14 +70,14 @@
   </style>
 </head>
 <body>
-  <header>メディアチャット</header>
+  <header>チャット</header>
   <div id="main">
     <input id="username" placeholder="名前を入力してください">
     <div id="chatbox"></div>
     <div id="controls">
       <input id="message" placeholder="メッセージを入力">
       <input type="file" id="media" accept="image/*,video/*">
-      <button onclick="sendMessage()">送信</button>
+      <button id="sendBtn" onclick="sendMessage()" disabled>送信</button>
       <button onclick="clearMessages()">全メッセージ削除</button>
     </div>
   </div>

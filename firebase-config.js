@@ -1,5 +1,3 @@
-// 以下の値をFirebaseコンソールから取得して書き換えてください
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCt-mfplV6nUaLBkZkgiaqlxfG9nnxYdz8",
   authDomain: "chat-54f55.firebaseapp.com",

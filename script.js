@@ -5,11 +5,15 @@ const chatbox = document.getElementById("chatbox");
 function sendMessage() {
   const name = document.getElementById("username").value.trim();
   const text = document.getElementById("message").value.trim();
-  if (!name || !text) return;
+  if (!name || !text) {
+    alert("名前とメッセージを入力してください。");
+    return;
+  }
 
   const timestamp = Date.now();
   db.ref("messages/" + timestamp).set({ from: name, msg: text });
   document.getElementById("message").value = "";
+  updateSendButtonState();
 }
 
 firebase.database().ref("messages").on("child_added", function(snapshot) {
@@ -53,3 +57,12 @@ function clearMessages() {
     chatbox.innerHTML = "";
   }
 }
+
+function updateSendButtonState() {
+  const name = document.getElementById("username").value.trim();
+  const text = document.getElementById("message").value.trim();
+  document.getElementById("sendBtn").disabled = !(name && text);
+}
+
+document.getElementById("username").addEventListener("input", updateSendButtonState);
+document.getElementById("message").addEventListener("input", updateSendButtonState);
