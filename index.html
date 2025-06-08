@@ -2,10 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>チャット</title>
+  <title>メディアチャット</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-storage-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="script.js" defer></script>
   <style>
@@ -26,7 +27,7 @@
       padding: 1rem;
     }
     #chatbox {
-      height: 60vh;
+      height: 50vh;
       overflow-y: auto;
       background-color: #222;
       padding: 1rem;
@@ -38,12 +39,10 @@
       padding: 0.5rem;
       background-color: #333;
       border-radius: 6px;
-      max-width: 80%;
       word-wrap: break-word;
     }
     .own {
       background-color: #0066cc;
-      align-self: flex-end;
     }
     #controls {
       display: flex;
@@ -56,22 +55,25 @@
       border-radius: 6px;
       border: none;
     }
-    input {
-      flex: 1;
-    }
     button {
       background-color: #0066cc;
       color: white;
     }
+    img, video {
+      max-width: 100%;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
-  <header>チャット</header>
+  <header>メディアチャット</header>
   <div id="main">
     <input id="username" placeholder="名前を入力してください">
     <div id="chatbox"></div>
     <div id="controls">
       <input id="message" placeholder="メッセージを入力">
+      <input type="file" id="media" accept="image/*,video/*">
       <button onclick="sendMessage()">送信</button>
       <button onclick="clearMessages()">全メッセージ削除</button>
     </div>
