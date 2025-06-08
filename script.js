@@ -2,13 +2,21 @@ const db = firebase.database();
 const storage = firebase.storage();
 const chatbox = document.getElementById("chatbox");
 
+// 入力が揃っているか確認し、送信ボタン活性制御
+function updateSendButtonState() {
+  const name = document.getElementById("username").value.trim();
+  const text = document.getElementById("message").value.trim();
+  document.getElementById("sendBtn").disabled = !(name && text);
+}
+
+document.getElementById("username").addEventListener("input", updateSendButtonState);
+document.getElementById("message").addEventListener("input", updateSendButtonState);
+
+// メッセージ送信
 function sendMessage() {
   const name = document.getElementById("username").value.trim();
   const text = document.getElementById("message").value.trim();
-  if (!name || !text) {
-    alert("名前とメッセージを入力してください。");
-    return;
-  }
+  if (!name || !text) return;
 
   const timestamp = Date.now();
   db.ref("messages/" + timestamp).set({ from: name, msg: text });
@@ -16,6 +24,7 @@ function sendMessage() {
   updateSendButtonState();
 }
 
+// メッセージ表示
 firebase.database().ref("messages").on("child_added", function(snapshot) {
   const msg = snapshot.val();
   const currentUser = document.getElementById("username").value.trim();
@@ -26,6 +35,7 @@ firebase.database().ref("messages").on("child_added", function(snapshot) {
   chatbox.scrollTop = chatbox.scrollHeight;
 });
 
+// メディア送信
 document.getElementById("media").addEventListener("change", async function(e) {
   const file = e.target.files[0];
   const name = document.getElementById("username").value.trim();
@@ -36,12 +46,10 @@ document.getElementById("media").addEventListener("change", async function(e) {
   await ref.put(file);
   const url = await ref.getDownloadURL();
 
-  const isImage = file.type.startsWith("image/");
-  const isVideo = file.type.startsWith("video/");
   let msg = "";
-  if (isImage) {
+  if (file.type.startsWith("image/")) {
     msg = `<img src="${url}">`;
-  } else if (isVideo) {
+  } else if (file.type.startsWith("video/")) {
     msg = `<video controls src="${url}"></video>`;
   } else {
     msg = `<a href="${url}" target="_blank">ファイル</a>`;
@@ -51,18 +59,15 @@ document.getElementById("media").addEventListener("change", async function(e) {
   document.getElementById("media").value = "";
 });
 
+// 削除処理にパスワード認証追加
 function clearMessages() {
-  if (confirm("本当に全てのメッセージを削除しますか？")) {
-    db.ref("messages").remove();
-    chatbox.innerHTML = "";
+  const pw = prompt("管理者パスワードを入力してください:");
+  if (pw === "1025") {
+    if (confirm("本当に全てのメッセージを削除しますか？")) {
+      db.ref("messages").remove();
+      chatbox.innerHTML = "";
+    }
+  } else {
+    alert("パスワードが違います。");
   }
 }
-
-function updateSendButtonState() {
-  const name = document.getElementById("username").value.trim();
-  const text = document.getElementById("message").value.trim();
-  document.getElementById("sendBtn").disabled = !(name && text);
-}
-
-document.getElementById("username").addEventListener("input", updateSendButtonState);
-document.getElementById("message").addEventListener("input", updateSendButtonState);
