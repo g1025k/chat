@@ -1,65 +1,41 @@
 const db = firebase.database();
-const storage = firebase.storage();
 const chatbox = document.getElementById("chatbox");
 
-// 入力が揃っているか確認し、送信ボタン活性制御
 function updateSendButtonState() {
   const name = document.getElementById("username").value.trim();
   const text = document.getElementById("message").value.trim();
   document.getElementById("sendBtn").disabled = !(name && text);
 }
-
 document.getElementById("username").addEventListener("input", updateSendButtonState);
 document.getElementById("message").addEventListener("input", updateSendButtonState);
 
-// メッセージ送信
 function sendMessage() {
   const name = document.getElementById("username").value.trim();
   const text = document.getElementById("message").value.trim();
   if (!name || !text) return;
 
   const timestamp = Date.now();
-  db.ref("messages/" + timestamp).set({ from: name, msg: text });
+  db.ref("messages/" + timestamp).set({ from: name, msg: text, time: timestamp });
   document.getElementById("message").value = "";
   updateSendButtonState();
 }
 
-// メッセージ表示
+function formatTimestamp(ts) {
+  const date = new Date(ts);
+  return date.toLocaleString(); // 例: "2025/6/8 10:15:23"
+}
+
 firebase.database().ref("messages").on("child_added", function(snapshot) {
   const msg = snapshot.val();
   const currentUser = document.getElementById("username").value.trim();
   const div = document.createElement("div");
   div.className = "message" + (msg.from === currentUser ? " own" : "");
-  div.innerHTML = `<strong>${msg.from}:</strong><br>${msg.msg}`;
+  const time = msg.time ? formatTimestamp(msg.time) : "";
+  div.innerHTML = `<strong>${msg.from}:</strong><br>${msg.msg}<br><small>${time}</small>`;
   chatbox.appendChild(div);
   chatbox.scrollTop = chatbox.scrollHeight;
 });
 
-// メディア送信
-document.getElementById("media").addEventListener("change", async function(e) {
-  const file = e.target.files[0];
-  const name = document.getElementById("username").value.trim();
-  if (!file || !name) return;
-
-  const timestamp = Date.now();
-  const ref = storage.ref("uploads/" + timestamp + "_" + file.name);
-  await ref.put(file);
-  const url = await ref.getDownloadURL();
-
-  let msg = "";
-  if (file.type.startsWith("image/")) {
-    msg = `<img src="${url}">`;
-  } else if (file.type.startsWith("video/")) {
-    msg = `<video controls src="${url}"></video>`;
-  } else {
-    msg = `<a href="${url}" target="_blank">ファイル</a>`;
-  }
-
-  db.ref("messages/" + timestamp).set({ from: name, msg });
-  document.getElementById("media").value = "";
-});
-
-// 削除処理にパスワード認証追加
 function clearMessages() {
   const pw = prompt("管理者パスワードを入力してください:");
   if (pw === "1025") {

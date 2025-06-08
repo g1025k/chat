@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-storage-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="script.js" defer></script>
   <style>
@@ -62,11 +61,6 @@
     button:disabled {
       background-color: #666;
     }
-    img, video {
-      max-width: 100%;
-      border-radius: 4px;
-      margin-top: 0.5rem;
-    }
   </style>
 </head>
 <body>
@@ -76,8 +70,7 @@
     <div id="chatbox"></div>
     <div id="controls">
       <input id="message" placeholder="メッセージを入力">
-      <input type="file" id="media" accept="image/*,video/*">
-      <button id="sendBtn" onclick="sendMessage()">送信</button>
+      <button id="sendBtn" onclick="sendMessage()" disabled>送信</button>
       <button onclick="clearMessages()">全メッセージ削除</button>
     </div>
   </div>
