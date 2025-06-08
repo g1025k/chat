@@ -2,25 +2,79 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>宛先付きチャット</title>
+  <title>チャット</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.9.0/firebase-database-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="script.js" defer></script>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    #chatbox { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
-    #chatbox div { margin: 5px 0; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #ffffff;
+    }
+    header {
+      padding: 1rem;
+      text-align: center;
+      background-color: #1f1f1f;
+      font-size: 1.5rem;
+    }
+    #main {
+      padding: 1rem;
+    }
+    #chatbox {
+      height: 60vh;
+      overflow-y: auto;
+      background-color: #222;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .message {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      background-color: #333;
+      border-radius: 6px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .own {
+      background-color: #0066cc;
+      align-self: flex-end;
+    }
+    #controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    input, button {
+      font-size: 1rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: none;
+    }
+    input {
+      flex: 1;
+    }
+    button {
+      background-color: #0066cc;
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <h1>チャット</h1>
-  <div>
-    名前：<input id="username" placeholder="自分の名前">
-    宛先：<input id="toUser" placeholder="誰に送るか（空=全体）">
+  <header>チャット</header>
+  <div id="main">
+    <input id="username" placeholder="名前を入力してください">
+    <div id="chatbox"></div>
+    <div id="controls">
+      <input id="message" placeholder="メッセージを入力">
+      <button onclick="sendMessage()">送信</button>
+      <button onclick="clearMessages()">全メッセージ削除</button>
+    </div>
   </div>
-  <div id="chatbox"></div>
-  <input id="message" placeholder="メッセージ">
-  <button onclick="sendMessage()">送信</button>
 </body>
 </html>
