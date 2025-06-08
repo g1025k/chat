@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>チャット</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js" defer></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #chatbox { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    #chatbox div { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <h1>チャット</h1>
+  <div id="chatbox"></div>
+  <input id="username" placeholder="名前" />
+  <input id="message" placeholder="メッセージ" />
+  <button onclick="sendMessage()">送信</button>
+</body>
+</html>
